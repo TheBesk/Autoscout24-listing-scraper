@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Autoscout24_listing_scraper.Model
+﻿namespace Autoscout24_listing_scraper.Model
 {
     public class Annuncio
     {

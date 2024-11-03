@@ -1,0 +1,9 @@
+{
+  "AppSettings": {
+    "discord_webhook": "https://discord.com/api/webhooks/1234567890xxx",
+    "telegram_chat_id": "-1234567890",
+    "telegram_bot_token": "123456:ABCDEFG",
+    "search_query": "https://www.autoscout24.it/lst?atype=C&cy=I&desc=0&sort=standard&source=homepage_search-mask&ustate=N%2CU",
+    "refresh_minutes": 120
+  }
+}

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Autoscout24_listing_scraper.Model;
 using System.Text.Json;
 using HtmlAgilityPack;
-using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.IO;
 
 namespace Autoscout24_listing_scraper.API
 {
@@ -81,6 +75,8 @@ namespace Autoscout24_listing_scraper.API
                             Console.WriteLine($"Errore: {response.StatusCode}");
                         }
                     }
+                    request.Dispose();
+                    content.Dispose();
                 }
             }
         }
@@ -137,32 +133,35 @@ namespace Autoscout24_listing_scraper.API
                         Console.WriteLine($"Errore: {response.StatusCode}");
                     }
                 }
-                }
+                request.Dispose();
+                content.Dispose();
+            }
         }
         /// <summary>
         /// Lettura delle inserzioni corrispondenti ai parametri di ricerca
         /// </summary>
         /// <returns></returns>
-        public List<Annuncio> ScrapeListings()
+        public List<Annuncio> ScrapeListings(string search_query="")
         {
-            var url = $"https://www.autoscout24.it/lst?atype=C&cy=I&damaged_listing=exclude&desc=1&fregfrom=2010&powertype=kw&priceto=4000&search_id=cd4990e1s6&sort=age&ustate=N%2CU&zip=roma&zipr=20";
+            var url = search_query;
             var web = new HtmlWeb();
             var doc = web.Load(url);
             List<Annuncio> elencoAnnunci = new();
 
             HtmlNode offerteNode = doc.DocumentNode.SelectSingleNode("/html/body/div[1]/div[2]/div/div/div/div[5]/header/div/div[1]/h1");
             int numeroOfferte = int.Parse(offerteNode.InnerText.Split(' ')[0].Replace(".", ""));
-            int limite = 19;
-            if (numeroOfferte < 19)
+            int limite = 9;
+            if (numeroOfferte < 9)
                 limite = numeroOfferte;
-            limite = 9;
             for (int i = 1; i <= limite; ++i)
             {
                 try
                 {
                     string nomeBold = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/h2").InnerText;
                     string nomeParte2 = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/h2/span").InnerText;
-                    string nome = nomeBold.Replace(nomeParte2, "").Trim();
+                    string nome = nomeBold;
+                    if (nomeParte2 != "")
+                        nome = nomeBold.Replace(nomeParte2, "").Trim();
                     string sottotitolo;
                     try
                     {
