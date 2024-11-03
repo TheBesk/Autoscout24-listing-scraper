@@ -64,7 +64,7 @@ namespace Autoscout24_listing_scraper.API
                     string bigIconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/apple-touch-icon.png";
                     client.BaseAddress = new Uri(webhook);
                     var request = new HttpRequestMessage(HttpMethod.Post, client.BaseAddress);
-                    var content = new StringContent(JsonSerializer.Serialize(new { content = text, username = "Autoscout24.it nuovi annunci", avatar_url = bigIconUrl }), Encoding.UTF8, "application/json");
+                    var content = new StringContent(JsonSerializer.Serialize(new { content = text, username = "Autoscout24 nuovi annunci", avatar_url = bigIconUrl }), Encoding.UTF8, "application/json");
                     request.Content = content;
                     if (!string.IsNullOrEmpty(text))
                     {
