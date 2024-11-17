@@ -3,6 +3,7 @@ using Autoscout24_listing_scraper.Model;
 using System.Text.Json;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace Autoscout24_listing_scraper.API
 {
@@ -48,11 +49,13 @@ namespace Autoscout24_listing_scraper.API
             
             foreach (var item in lista)
             {
+                string subtitle = item.nomeDetail != "" ? "## " : "";
+                string subsubtitle = item.sottotitolo != "" ? "### " : "";
                 string text = "\n";
                 text += "#  [" + item.nomeBold + "]" + "(" + item.linkInserzione + ")" + "\n";
-                //text += "## "+item.nomeDetail +"\n ### "+item.sottotitolo + "\n";
+                text += $"{subtitle}" + WebUtility.HtmlDecode(item.nomeDetail) + $"\n {subsubtitle}" + WebUtility.HtmlDecode(item.sottotitolo) + "\n";
                 text += "## 💶 " + item.prezzo + "\n";
-                text += "🌏 " + item.localita + "\n";
+                text += "🌏 " + WebUtility.HtmlDecode(item.localita) + "\n";
                 text += "🛣 " + item.km + "\t ⚙️ "+ item.tipoCambio + "\t 📅 "+item.dataVeicolo + "\n";
                 text += "⛽ " + item.tipoCarburante + "\t " + "⏲ " + item.potenza;
                 text += "\n\n";
@@ -83,16 +86,17 @@ namespace Autoscout24_listing_scraper.API
 
         public void SendTelegramListing(List<Annuncio> lista, string chat_id, string bot_token)
         {
-            string text = "";
+            
             foreach (var item in lista)
             {
+                string text = "";
                 var link = "[*" + item.nomeBold + "*]" + "(" + item.linkInserzione + ")" + "\n";
                 link = Regex.Replace(link, @"\.", @"\.");
                 link = Regex.Replace(link, @"\-", @"\-");
-                //text += "## "+item.nomeDetail +"\n ### "+item.sottotitolo + "\n";
                 var text2 = "";
+                text2 += WebUtility.HtmlDecode(item.nomeDetail) +"\n" + WebUtility.HtmlDecode(item.sottotitolo) + "\n";
                 text2 += " 💶 " + item.prezzo + "\n";
-                text2 += "🌏 " + item.localita + "\n";
+                text2 += "🌏 " + WebUtility.HtmlDecode(item.localita) + "\n";
                 text2 += "🛣 " + item.km + "\t ⚙️ " + item.tipoCambio + "\t 📅 " + item.dataVeicolo + "\n";
                 text2 += "⛽ " + item.tipoCarburante + "\t " + "⏲ " + item.potenza;
                 text2 += "\n\n";
@@ -100,14 +104,9 @@ namespace Autoscout24_listing_scraper.API
                 text2 = Regex.Replace(text2, @"\-", @"\-");
                 text2 = Regex.Replace(text2, @"\(", @"\(");
                 text2 = Regex.Replace(text2, @"\)", @"\)");
+                text2 = Regex.Replace(text2, @"\+", @"\+");
                 text += link+text2;
-            }
-            //text = Regex.Replace(text, @"\.", @"\.");
-            //text = Regex.Replace(text, @"\(", @"\(");
-            //text = Regex.Replace(text, @"\)", @"\)");
-            //text = Regex.Replace(text, @"\-", @"\-");
-            //text = Regex.Replace(text, @"\[", @"\[");
-            //text = Regex.Replace(text, @"\]", @"\]");
+
 
             using (var client = new HttpClient())
                 {
@@ -135,6 +134,7 @@ namespace Autoscout24_listing_scraper.API
                 }
                 request.Dispose();
                 content.Dispose();
+                }
             }
         }
         /// <summary>
