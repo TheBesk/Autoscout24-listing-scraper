@@ -4,6 +4,7 @@ using System.Text.Json;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 using System.Net;
+using System.Web;
 
 namespace Autoscout24_listing_scraper.API
 {
@@ -64,10 +65,10 @@ namespace Autoscout24_listing_scraper.API
                 {
 
                     //string iconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/favicon-v2-32x32.png";
-                    string bigIconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/apple-touch-icon.png";
+                    //string bigIconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/apple-touch-icon.png";
                     client.BaseAddress = new Uri(webhook);
                     var request = new HttpRequestMessage(HttpMethod.Post, client.BaseAddress);
-                    var content = new StringContent(JsonSerializer.Serialize(new { content = text, username = "Autoscout24 nuovi annunci", avatar_url = bigIconUrl }), Encoding.UTF8, "application/json");
+                    var content = new StringContent(JsonSerializer.Serialize(new { content = text, username = "Autoscout24 nuovi annunci" }), Encoding.UTF8, "application/json");
                     request.Content = content;
                     if (!string.IsNullOrEmpty(text))
                     {
@@ -107,6 +108,7 @@ namespace Autoscout24_listing_scraper.API
                 text2 = Regex.Replace(text2, @"\+", @"\+");
                 text2 = Regex.Replace(text2, @"\|", @"\|");
                 text2 = Regex.Replace(text2, @"\!", @"\!");
+                text2 = Regex.Replace(text2, @"\/", @"\/");
                 text += link+text2;
 
 
@@ -215,18 +217,18 @@ namespace Autoscout24_listing_scraper.API
                     }
                     Annuncio tmp = new Annuncio()
                     {
-                        nomeBold = nome,
-                        nomeDetail = nomeParte2,
-                        sottotitolo = sottotitolo,
-                        prezzo = prezzo,
-                        km = km,
-                        tipoCambio = tipoCambio,
-                        dataVeicolo = data,
-                        tipoCarburante = carburante,
-                        potenza = potenza,
-                        linkInserzione = link,
-                        urlPrimaImmagine = immagine1,
-                        localita = provenienza
+                        nomeBold = HttpUtility.HtmlDecode(Regex.Unescape(nome)),
+                        nomeDetail = HttpUtility.HtmlDecode(Regex.Unescape(nomeParte2)),
+                        sottotitolo = HttpUtility.HtmlDecode(Regex.Unescape(sottotitolo)),
+                        prezzo = HttpUtility.HtmlDecode(Regex.Unescape(prezzo)),
+                        km = HttpUtility.HtmlDecode(Regex.Unescape(km)),
+                        tipoCambio = HttpUtility.HtmlDecode(Regex.Unescape(tipoCambio)),
+                        dataVeicolo = HttpUtility.HtmlDecode(Regex.Unescape(data)),
+                        tipoCarburante = HttpUtility.HtmlDecode(Regex.Unescape(carburante)),
+                        potenza = HttpUtility.HtmlDecode(Regex.Unescape(potenza)),
+                        linkInserzione = HttpUtility.HtmlDecode(Regex.Unescape(link)),
+                        urlPrimaImmagine = HttpUtility.HtmlDecode(Regex.Unescape(immagine1)),
+                        localita = HttpUtility.HtmlDecode(Regex.Unescape(provenienza))
                     };
                     elencoAnnunci.Add(tmp);
                 }
