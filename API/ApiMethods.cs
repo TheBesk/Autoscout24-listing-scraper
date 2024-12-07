@@ -105,6 +105,8 @@ namespace Autoscout24_listing_scraper.API
                 text2 = Regex.Replace(text2, @"\(", @"\(");
                 text2 = Regex.Replace(text2, @"\)", @"\)");
                 text2 = Regex.Replace(text2, @"\+", @"\+");
+                text2 = Regex.Replace(text2, @"\|", @"\|");
+                text2 = Regex.Replace(text2, @"\!", @"\!");
                 text += link+text2;
 
 
