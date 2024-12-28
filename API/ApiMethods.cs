@@ -162,7 +162,9 @@ namespace Autoscout24_listing_scraper.API
                 try
                 {
                     string nomeBold = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/h2").InnerText;
+                    nomeBold = nomeBold.Replace(@"\", @"");
                     string nomeParte2 = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/h2/span").InnerText;
+                    nomeParte2 = nomeParte2.Replace(@"\", @"");
                     string nome = nomeBold;
                     if (nomeParte2 != "")
                         nome = nomeBold.Replace(nomeParte2, "").Trim();
@@ -170,6 +172,7 @@ namespace Autoscout24_listing_scraper.API
                     try
                     {
                        sottotitolo = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/span").InnerText;
+                       sottotitolo = sottotitolo.Replace(@"\", @"");
                     }
                     catch
                     {
