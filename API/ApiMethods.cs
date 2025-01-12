@@ -63,9 +63,6 @@ namespace Autoscout24_listing_scraper.API
 
                 using (var client = new HttpClient())
                 {
-
-                    //string iconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/favicon-v2-32x32.png";
-                    //string bigIconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/apple-touch-icon.png";
                     client.BaseAddress = new Uri(webhook);
                     var request = new HttpRequestMessage(HttpMethod.Post, client.BaseAddress);
                     var content = new StringContent(JsonSerializer.Serialize(new { content = text, username = "Autoscout24 nuovi annunci" }), Encoding.UTF8, "application/json");
@@ -94,6 +91,8 @@ namespace Autoscout24_listing_scraper.API
                 var link = "[*" + item.nomeBold + "*]" + "(" + item.linkInserzione + ")" + "\n";
                 link = Regex.Replace(link, @"\.", @"\.");
                 link = Regex.Replace(link, @"\-", @"\-");
+                link = Regex.Replace(link, @"\+", @"\+");
+                link = Regex.Replace(link, @"\!", @"\!");
                 var text2 = "";
                 text2 += WebUtility.HtmlDecode(item.nomeDetail) +"\n" + WebUtility.HtmlDecode(item.sottotitolo) + "\n";
                 text2 += " 💶 " + item.prezzo + "\n";
@@ -114,9 +113,6 @@ namespace Autoscout24_listing_scraper.API
 
             using (var client = new HttpClient())
                 {
-
-                    string iconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/favicon-v2-32x32.png";
-                    string bigIconUrl = "https://www.autoscout24.it/assets/contentservice/images/favicon/apple-touch-icon.png";
                     client.BaseAddress = new Uri($"https://api.telegram.org/bot{bot_token}/sendMessage");
                     var request = new HttpRequestMessage(HttpMethod.Post, client.BaseAddress);
                 var values = new System.Collections.Generic.Dictionary<string, string>
