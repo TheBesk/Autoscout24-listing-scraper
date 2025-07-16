@@ -147,19 +147,18 @@ namespace Autoscout24_listing_scraper.API
             var web = new HtmlWeb();
             var doc = web.Load(url);
             List<Annuncio> elencoAnnunci = new();
-
-            HtmlNode offerteNode = doc.DocumentNode.SelectSingleNode("/html/body/div[1]/div[2]/div/div/div/div[5]/header/div/div[1]/h1");
-            int numeroOfferte = int.Parse(offerteNode.InnerText.Split(' ')[0].Replace(".", ""));
+            HtmlNode offerteNode = doc.DocumentNode.SelectSingleNode("/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main");
+            //int numeroOfferte = int.Parse(offerteNode.InnerText.Split(' ')[0].Replace(".", ""));
             int limite = 9;
-            if (numeroOfferte < 9)
-                limite = numeroOfferte;
+            //if (numeroOfferte < 9)
+            //    limite = numeroOfferte;
             for (int i = 1; i <= limite; ++i)
             {
                 try
                 {
-                    string nomeBold = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/h2").InnerText;
+                    string nomeBold = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[2]/a/h2").InnerText;
                     nomeBold = nomeBold.Replace(@"\", @"");
-                    string nomeParte2 = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/h2/span").InnerText;
+                    string nomeParte2 = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[2]/a/h2/span").InnerText;
                     nomeParte2 = nomeParte2.Replace(@"\", @"");
                     string nome = nomeBold;
                     if (nomeParte2 != "")
@@ -167,7 +166,7 @@ namespace Autoscout24_listing_scraper.API
                     string sottotitolo;
                     try
                     {
-                       sottotitolo = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a/span").InnerText;
+                       sottotitolo = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[2]/a/span").InnerText;
                        sottotitolo = sottotitolo.Replace(@"\", @"");
                     }
                     catch
@@ -177,36 +176,36 @@ namespace Autoscout24_listing_scraper.API
                     string prezzo;
                     try
                     {
-                        prezzo = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[3]/div[1]/p").InnerText;
+                        prezzo = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[3]/div[1]/p").InnerText;
                     }
                     catch (NullReferenceException)
                     {
-                        prezzo = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[3]/div[1]/div[2]/span").InnerText;
+                        prezzo = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[3]/div[1]/div[2]/span").InnerText;
                     }
-                    string km = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[3]/div[3]/span[1]").InnerText;
-                    string tipoCambio = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[3]/div[3]/span[2]").InnerText;
-                    string data = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[3]/div[3]/span[3]").InnerText;
-                    string carburante = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[3]/div[3]/span[4]").InnerText;
-                    string potenza = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[3]/div[3]/span[5]").InnerText;
+                    string km = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[3]/div[3]/span[1]").InnerText;
+                    string tipoCambio = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[3]/div[3]/span[2]").InnerText;
+                    string data = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[3]/div[3]/span[3]").InnerText;
+                    string carburante = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[3]/div[3]/span[4]").InnerText;
+                    string potenza = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[3]/div[3]/span[5]").InnerText;
                     string immagine1 = "";
                     string provenienza;
                     try
                     {
-                        provenienza = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[2]/span[2]").InnerText;
+                        provenienza = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[2]/span[2]").InnerText;
                     }
                     catch
                     {
-                        provenienza = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/span").InnerText;
+                        provenienza = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/span").InnerText;
                     }
                     if (provenienza.Contains("•"))
                         provenienza = provenienza.Split("•")[1];
-                    var imgNode = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[1]/section/div[1]/picture/img");
+                    var imgNode = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[1]/section/div[1]/picture/img");
                     if (imgNode != null)
                     {
                         immagine1 = imgNode.GetAttributeValue("src", string.Empty);
                     }
                     //string immagine1 = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[1]/section/div[1]/picture/img").GetAttributeValue("src", string.Empty);
-                    string link = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[3]/main/article[{i}]/div[1]/div[2]/a").GetAttributeValue("href", string.Empty);//.OuterHtml;
+                    string link = doc.DocumentNode.SelectSingleNode($"/html/body/div[1]/div[2]/div/div/div/div[5]/div[2]/main/article[{i}]/div[1]/div[2]/a").GetAttributeValue("href", string.Empty);//.OuterHtml;
                     link = "https://www.autoscout24.it" + link;
 
                     int indiceVirgola = prezzo.IndexOf(',');
